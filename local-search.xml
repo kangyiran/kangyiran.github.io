@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>生成SSH公钥</title>
+    <link href="/2024/09/30/%E7%94%9F%E6%88%90SSH%E5%85%AC%E9%92%A5/"/>
+    <url>/2024/09/30/%E7%94%9F%E6%88%90SSH%E5%85%AC%E9%92%A5/</url>
+    
+    <content type="html"><![CDATA[<h3 id="通过命令-ssh-keygen-生成-SSH-Key："><a href="#通过命令-ssh-keygen-生成-SSH-Key：" class="headerlink" title="通过命令 ssh-keygen 生成 SSH Key："></a>通过命令 ssh-keygen 生成 SSH Key：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t ed25519 -C <span class="hljs-string">&quot;youremail@example.com&quot;</span><br></code></pre></td></tr></table></figure><p>-t key 类型<br>-C 注释<br>输出，如：</p><p>Generating public&#x2F;private ed25519 key pair.<br>Enter file in which to save the key (&#x2F;home&#x2F;git&#x2F;.ssh&#x2F;id_ed25519):<br>Enter passphrase (empty for no passphrase):<br>Enter same passphrase again:<br>Your identification has been saved in &#x2F;home&#x2F;git&#x2F;.ssh&#x2F;id_ed25519<br>Your public key has been saved in &#x2F;home&#x2F;git&#x2F;.ssh&#x2F;id_ed25519.pub<br>The key fingerprint is:<br>SHA256:ohDd0OK5WG2dx4gST&#x2F;j35HjvlJlGHvihyY+Msl6IC8I Gitee SSH Key<br>The key’s randomart image is:<br>+–[ED25519 256]–+<br>|    .o           |<br>|   .+oo          |<br>|  …O.o +       |<br>|   .&#x3D; * &#x3D; +.     |<br>|  .o +..S*. +    |<br>|. …o o..+* *   |<br>|.E. o . ..+.O    |<br>| . . … o &#x3D;.    |<br>|    ..oo. o.o    |<br>+—-[SHA256]—–+</p><p>中间通过三次回车键确定<br>查看生成的 SSH 公钥和私钥：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ls</span> ~/.ssh/<br></code></pre></td></tr></table></figure><p>输出：</p><p>id_ed25519  id_ed25519.pub</p><p>私钥文件 id_ed25519<br>公钥文件 id_ed25519.pub<br>读取公钥文件 ~&#x2F;.ssh&#x2F;id_ed25519.pub：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> ~/.ssh/id_ed25519.pub<br></code></pre></td></tr></table></figure><p>输出，如：</p><p>ssh-ed25519 AAAA***5B Gitee SSH Key</p><p>复制终端输出的公钥。</p><p>设置账户 SSH 公钥<br>用户可以通过主页右上角 「个人设置」-&gt;「安全设置」-&gt;「SSH 公钥」-&gt;「添加公钥」 ，添加生成的 public key 添加到当前账户中。</p><p>需要注意： 添加公钥需要验证用户密码</p><p>添加账户 SSH 公钥</p><p>通过 ssh -T 测试，输出 SSH Key 绑定的用户名：</p><p>$ ssh -T <a href="mailto:&#103;&#105;&#x74;&#64;&#103;&#105;&#x74;&#x65;&#x65;&#46;&#99;&#111;&#109;">&#103;&#105;&#x74;&#64;&#103;&#105;&#x74;&#x65;&#x65;&#46;&#99;&#111;&#109;</a><br>Hi USERNAME! You’ve successfully authenticated, but GITEE.COM does not provide shell access.</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>git</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>git配置</title>
+    <link href="/2024/09/30/git%E9%85%8D%E7%BD%AE/"/>
+    <url>/2024/09/30/git%E9%85%8D%E7%BD%AE/</url>
+    
+    <content type="html"><![CDATA[<h1 id="配置git"><a href="#配置git" class="headerlink" title="配置git"></a>配置git</h1><p>注：以下配置命令因有--global 参数，因此皆为全局配置，在用户主目录下的一个隐藏文件.gitconfig中。每个仓库的Git配置文件都放在.git/config文件中。</p><h3 id="1-配置名字和邮箱"><a href="#1-配置名字和邮箱" class="headerlink" title="1.配置名字和邮箱"></a>1.配置名字和邮箱</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ git config --global user.name <span class="hljs-string">&quot;UserName&quot;</span><br>$ git config --global user.email <span class="hljs-string">&quot;user@user.email&quot;</span><br></code></pre></td></tr></table></figure><h3 id="2-配置git忽略文件权限检查："><a href="#2-配置git忽略文件权限检查：" class="headerlink" title="2.配置git忽略文件权限检查："></a>2.配置git忽略文件权限检查：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ git config --global core.filemode <span class="hljs-literal">false</span> //全局配置未生效时可在项目目录运行命令：git config core.filemode <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure><h3 id="3-设置push命令只推送当前分支到远程"><a href="#3-设置push命令只推送当前分支到远程" class="headerlink" title="3.设置push命令只推送当前分支到远程"></a>3.设置push命令只推送当前分支到远程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ git config --global push.default simple<br></code></pre></td></tr></table></figure><h3 id="4-配置别名"><a href="#4-配置别名" class="headerlink" title="4.配置别名"></a>4.配置别名</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ git config --global alias.st status//将git status 配置为 git st<br>$ git config --global alias.co checkout//<br>$ git config --global alias.ci commit//<br>$ git config --global alias.br branch//<br>$ git config --global alias.unstage <span class="hljs-string">&#x27;reset HEAD&#x27;</span>//暂存区的修改撤销掉,git unstage test.py等同git reset HEAD test.py<br>$ git config --global alias.last <span class="hljs-string">&#x27;log -1&#x27;</span>//git last显示最近一次的提交<br>$ git config --global alias.lg <span class="hljs-string">&quot;log --color --graph --pretty=format:&#x27;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#x27; --abbrev-commit&quot;</span><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>git</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
